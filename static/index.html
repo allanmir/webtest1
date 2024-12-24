@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savoria - Delicious Food Delivered</title>
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <!-- Tailwind CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Custom styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Alpine.js for reactivity -->
+    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="bg-gray-50" x-data="{ isCartOpen: false, cart: [], searchTerm: '' }">
+    <!-- Loading Screen -->
+    <div id="loading-screen" class="fixed inset-0 bg-white z-50 flex items-center justify-center">
+        <div class="text-center">
+            <div class="loading-icon">
+                <svg class="h-12 w-12 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 4C10.4178 4 8.87103 4.46919 7.55544 5.34824C6.23985 6.22729 5.21447 7.47672 4.60897 8.93853C4.00347 10.4003 3.84504 12.0089 4.15372 13.5607C4.4624 15.1126 5.22433 16.538 6.34315 17.6569C7.46197 18.7757 8.88743 19.5376 10.4393 19.8463C11.9911 20.155 13.5997 19.9965 15.0615 19.391C16.5233 18.7855 17.7727 17.7602 18.6518 16.4446C19.5308 15.129 20 13.5823 20 12" stroke-linecap="round"/>
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent mt-4">
+                Savoria
+            </h2>
+            <p class="text-gray-500 mt-2">Preparing something delicious...</p>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
+        <div class="bg-gradient-to-r from-purple-600 to-orange-500">
+            <p class="text-white text-sm text-center py-2">
+                Free delivery on orders over $30! 🚀
+            </p>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo -->
+                <a href="#" class="flex items-center space-x-2">
+                    <svg class="h-8 w-8 text-purple-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 4C10.4178 4 8.87103 4.46919 7.55544 5.34824C6.23985 6.22729 5.21447 7.47672 4.60897 8.93853C4.00347 10.4003 3.84504 12.0089 4.15372 13.5607C4.4624 15.1126 5.22433 16.538 6.34315 17.6569C7.46197 18.7757 8.88743 19.5376 10.4393 19.8463C11.9911 20.155 13.5997 19.9965 15.0615 19.391C16.5233 18.7855 17.7727 17.7602 18.6518 16.4446C19.5308 15.129 20 13.5823 20 12" stroke-linecap="round"/>
+                    </svg>
+                    <span class="text-2xl font-bold bg-gradient-to-r from-purple-600 to-orange-500 bg-clip-text text-transparent">
+                        Savoria
+                    </span>
+                </a>
+
+                <!-- Navigation Links -->
+                <div class="hidden md:flex space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-purple-600">Home</a>
+                    <a href="#restaurants" class="text-gray-600 hover:text-purple-600">Restaurants</a>
+                    <a href="#categories" class="text-gray-600 hover:text-purple-600">Categories</a>
+                    <a href="#about" class="text-gray-600 hover:text-purple-600">About</a>
+                </div>
+
+                <!-- Cart Button -->
+                <button @click="isCartOpen = true" class="relative p-2">
+                    <svg class="h-6 w-6 text-gray-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                    </svg>
+                    <span x-show="cart.length" x-text="cart.length" class="absolute -top-1 -right-1 bg-orange-500 text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                    </span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <div class="relative h-[500px] flex items-center justify-center mt-20">
+        <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&q=80')">
+            <div class="absolute inset-0 bg-black opacity-50"></div>
+        </div>
+        
+        <div class="relative z-10 text-center px-4">
+            <h1 class="text-4xl md:text-6xl font-bold text-white mb-6">
+                Delicious Food Delivered To Your Door
+            </h1>
+            <p class="text-xl text-white mb-8">
+                Order from your favorite restaurants with just a few clicks
+            </p>
+            
+            <div class="max-w-2xl mx-auto">
+                <div class="flex items-center bg-white rounded-lg overflow-hidden p-2">
+                    <svg class="h-6 w-6 text-gray-400 mx-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    <input
+                        type="text"
+                        x-model="searchTerm"
+                        placeholder="Search for restaurants or dishes..."
+                        class="flex-1 py-2 px-4 focus:outline-none"
+                    >
+                    <button class="bg-orange-500 text-white px-6 py-2 rounded-md hover:bg-orange-600">
+                        Search
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Cart Sidebar -->
+    <div x-show="isCartOpen" 
+         class="fixed inset-0 z-50 overflow-hidden"
+         x-transition:enter="transition ease-out duration-300"
+         x-transition:enter-start="opacity-0"
+         x-transition:enter-end="opacity-100"
+         x-transition:leave="transition ease-in duration-300"
+         x-transition:leave-start="opacity-100"
+         x-transition:leave-end="opacity-0">
+        <div class="absolute inset-0 bg-gray-500 bg-opacity-75" @click="isCartOpen = false"></div>
+        
+        <div class="fixed inset-y-0 right-0 max-w-full flex">
+            <div class="w-screen max-w-md transform transition ease-in-out duration-300"
+                 x-transition:enter="translate-x-0"
+                 x-transition:enter-start="translate-x-full"
+                 x-transition:enter-end="translate-x-0"
+                 x-transition:leave="translate-x-0"
+                 x-transition:leave-start="translate-x-0"
+                 x-transition:leave-end="translate-x-full">
+                <div class="h-full flex flex-col bg-white shadow-xl">
+                    <div class="flex-1 py-6 overflow-y-auto px-4">
+                        <div class="flex items-start justify-between">
+                            <h2 class="text-lg font-medium text-gray-900">Shopping cart</h2>
+                            <button @click="isCartOpen = false" class="ml-3 h-7 flex items-center">
+                                <svg class="h-6 w-6 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                                    <path d="M6 18L18 6M6 6l12 12" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="mt-8" x-show="cart.length === 0">
+                            <p class="text-gray-500 text-center">Your cart is empty</p>
+                        </div>
+
+                        <div class="mt-8" x-show="cart.length > 0">
+                            <template x-for="item in cart" :key="item.id">
+                                <div class="flex py-6">
+                                    <div class="flex-shrink-0 w-24 h-24 rounded-md overflow-hidden">
+                                        <img :src="item.image" :alt="item.name" class="w-full h-full object-cover">
+                                    </div>
+                                    <div class="ml-4 flex-1 flex flex-col">
+                                        <div>
+                                            <div class="flex justify-between text-base font-medium text-gray-900">
+                                                <h3 x-text="item.name"></h3>
+                                                <p class="ml-4" x-text="'$' + (item.price * item.quantity).toFixed(2)"></p>
+                                            </div>
+                                        </div>
+                                        <div class="flex-1 flex items-end justify-between text-sm">
+                                            <div class="flex items-center space-x-2">
+                                                <button @click="item.quantity--" class="text-gray-500 hover:text-gray-700">-</button>
+                                                <span x-text="item.quantity"></span>
+                                                <button @click="item.quantity++" class="text-gray-500 hover:text-gray-700">+</button>
+                                            </div>
+                                            <button @click="cart = cart.filter(i => i.id !== item.id)" class="font-medium text-red-600 hover:text-red-500">
+                                                Remove
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="border-t border-gray-200 py-6 px-4" x-show="cart.length > 0">
+                        <div class="flex justify-between text-base font-medium text-gray-900">
+                            <p>Subtotal</p>
+                            <p x-text="'$' + cart.reduce((sum, item) => sum + item.price * item.quantity, 0).toFixed(2)"></p>
+                        </div>
+                        <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+                        <div class="mt-6">
+                            <button class="w-full bg-orange-500 text-white px-6 py-3 rounded-md hover:bg-orange-600">
+                                Checkout
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Hide loading screen after 2 seconds
+        setTimeout(() => {
+            document.getElementById('loading-screen').style.display = 'none';
+        }, 2000);
+    </script>
+</body>
+</html>
